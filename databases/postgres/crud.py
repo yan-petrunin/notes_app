@@ -22,12 +22,16 @@ async def insert_note(header: str, text: str, user_id: int, tags: Optional[list]
         if tags:
             params = [{"name": tag} for tag in tags]
             await session.execute(insert(Tag).values(params).on_conflict_do_nothing())
+            stmt = select(Tag.id).where(Tag.name.in_((tags)))
+            tag_ids = await session.execute(stmt)
+            t = tag_ids.scalars().all()
         session.add(note)
         await session.commit()
+        NoteTag(note.id, )
 
 
 async def update_note(header: Optional[str] = None, text: Optional[str] = None, tags: Optional[list] = None):
-    pass
+    ...
 
 
 async def show_notes(user_id: int):
@@ -45,5 +49,5 @@ async def insert_user(username: str, email: str, password: str):
 
 if __name__ == '__main__':
     #asyncio.run(insert_user('yan', 'yan@email.com', '12qwer'))
-    #asyncio.run(insert_note(header='zxcv', text='vcxz', user_id=2))
-    asyncio.run(show_notes(1))
+    # asyncio.run(insert_note(header='zxcv', text='vcxz', user_id=2))
+    asyncio.run(insert_note('asdf', 'zxcv', 1, ['str', 'zc']))

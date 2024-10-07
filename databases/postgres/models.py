@@ -39,8 +39,8 @@ class User(Base):
     __tablename__ = 'users'
 
     id = mapped_column(Integer, primary_key=True, autoincrement=True)
-    username = mapped_column(String, nullable=False)
-    email = mapped_column(String, nullable=False)
+    username = mapped_column(String, unique=True, nullable=False)
+    email = mapped_column(String, unique=True, nullable=False)
     password = mapped_column(String, nullable=False)
 
 
